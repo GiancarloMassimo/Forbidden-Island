@@ -5,9 +5,6 @@ public class Main {
         System.out.println("This is working");
         System.out.println("Test");
         int test2 = 0;
-
-        for (int i = 0; i < 5; i++) {
-            out.println("This is my pull request");
-        }
+        System.out.println(test2);
     }
 }
