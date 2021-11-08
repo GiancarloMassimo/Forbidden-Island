@@ -5,5 +5,6 @@ public class Main {
         System.out.println("This is working");
         System.out.println("Test");
         int test2 = 0;
+        System.out.println(test2);
     }
 }
