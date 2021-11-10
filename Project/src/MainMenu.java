@@ -20,8 +20,8 @@ public class MainMenu extends JFrame implements ItemListener, ActionListener {
     private boolean hexInput, binInput, decInput;
     private int number;
 
-    private static final int WIDTH = 936;
-    private static final int HEIGHT = 557;
+    private static final int WIDTH = 1600;
+    private static final int HEIGHT = 960;
     public MainMenu(String framename){
         super(framename);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
