@@ -5,10 +5,10 @@ import javax.imageio.ImageIO;
 import java.io.*;
 
 public class MainPanel extends JPanel{
-    private BufferedImage bg;
+    private BufferedImage backgroundImage;
     public MainPanel(){
         try {
-            bg = ImageIO.read(MainPanel.class.getResource("/Images/background.png"));
+            backgroundImage = ImageIO.read(MainPanel.class.getResource("/Images/background.png"));
         }
         catch(Exception E)
         {
@@ -16,7 +16,7 @@ public class MainPanel extends JPanel{
             return;
         }
     }
-    public void paint(Graphics g){
-        g.drawImage(bg, 0, 0, 920, 518, null);
+    public void paint(Graphics g) {
+        g.drawImage(backgroundImage, 0, 0, 920, 518, null);
     }
 }
