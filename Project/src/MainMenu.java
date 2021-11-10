@@ -14,6 +14,11 @@ public class MainMenu extends JFrame implements ItemListener, ActionListener {
     private JButton printButton;
     private JRadioButton dec_irbutton, bin_irbutton, hex_irbutton;
     private ButtonGroup  input_radioGroup;
+    private String binIn, hexIn;
+    private int decimal, baseIn;
+    private boolean wantHex, wantBin, wantDec;
+    private boolean hexInput, binInput, decInput;
+    private int number;
 
     private static final int WIDTH = 936;
     private static final int HEIGHT = 557;
