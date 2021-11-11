@@ -14,4 +14,8 @@ public class GridTile {
             state = TileState.sunk;
         }
     }
+
+    public String toString() {
+        return name;
+    }
 }

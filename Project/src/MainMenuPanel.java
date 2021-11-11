@@ -2,13 +2,12 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.image.*;
 import javax.imageio.ImageIO;
-import java.io.*;
 
-public class MainPanel extends JPanel{
+public class MainMenuPanel extends JPanel{
     private BufferedImage bg;
-    public MainPanel(){
+    public MainMenuPanel(){
         try {
-            bg = ImageIO.read(MainPanel.class.getResource("/Images/background.png"));
+            bg = ImageIO.read(MainMenuPanel.class.getResource("/Images/background.png"));
         }
         catch(Exception E)
         {
@@ -17,6 +16,6 @@ public class MainPanel extends JPanel{
         }
     }
     public void paint(Graphics g){
-        g.drawImage(bg, 0, 0, 920, 518, null);
+        g.drawImage(bg, 0, 0, 937, 537, null);
     }
 }

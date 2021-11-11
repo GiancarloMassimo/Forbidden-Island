@@ -7,6 +7,8 @@ public class Main {
         System.out.println("Test");
         int test2 = 0;
         test2++;
-        MainMenu graphics = new MainMenu("Main Menu");
+        MainMenuFrame graphics = new MainMenuFrame("Main Menu");
+
+        Map map = new Map();
     }
 }

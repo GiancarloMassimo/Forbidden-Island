@@ -1,10 +1,8 @@
-import java.awt.*;
-import java.lang.reflect.GenericArrayType;
+import java.util.*;
 
 public class Map {
     private GridTile[][] map;
 
-    //TODO: Separate based on treasure
     private GridTile[] tiles = {
         new GridTile("Breaker's Bridge"),
         new GridTile("Bronze Gate"),
@@ -15,6 +13,7 @@ public class Map {
         new GridTile("Coral Palace"),
         new GridTile("Crimson Forest"),
         new GridTile("Dunes of Deception"),
+        new GridTile("Fool's Landing"),
         new GridTile("Gold Gate"),
         new GridTile("Howling Garden"),
         new GridTile("Iron Gate"),
@@ -31,14 +30,31 @@ public class Map {
         new GridTile("Whispering Garden")
     };
 
-    private GridTile foolsLanding = new GridTile("Fool's Landing");
-
     public Map() {
+        createGrid();
+    }
+
+    public GridTile[] getTiles() {
+        return tiles;
+    }
+
+    private void createGrid() {
         map = new GridTile[6][6];
+        ArrayList<GridTile> tilesList = new ArrayList<>(Arrays.asList(tiles));
+        Collections.shuffle(tilesList);
+        Queue<GridTile> tileQueue = new LinkedList<>(tilesList);
+        System.out.println(tileQueue.toString());
 
+        int margin = 2;
         for (int r = 0; r < map.length; r++) {
-            for (int c = 0; c < map.length; c++) {
+            for (int c = margin; c < map.length - margin; c++) {
+                map[r][c] = tileQueue.poll();
+            }
 
+            if (r < map.length / 2 - 1) {
+                margin--;
+            } else if (r > map.length / 2 - 1) {
+                margin++;
             }
         }
     }

@@ -1,9 +1,8 @@
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
-import java.util.Random.*;
 
-public class MainMenu extends JFrame implements ItemListener, ActionListener {
+public class MainMenuFrame extends JFrame implements ItemListener, ActionListener {
     private Container win;
 
     private JLabel screenLabel, inputLabel, outputLabel, inputBaseLabel;
@@ -22,12 +21,12 @@ public class MainMenu extends JFrame implements ItemListener, ActionListener {
 
     private static final int WIDTH = 936;
     private static final int HEIGHT = 557;
-    public MainMenu(String framename){
+    public MainMenuFrame(String framename){
         super(framename);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(WIDTH, HEIGHT);
         setResizable(false);
-        add(new MainPanel());
+        add(new MainMenuPanel());
         setVisible(true);
     }
 
