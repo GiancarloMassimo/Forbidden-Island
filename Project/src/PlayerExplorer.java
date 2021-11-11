@@ -10,6 +10,7 @@ public class PlayerExplorer extends Player{
         if (Math.abs(row - pawn.getRow()) <= 1 && Math.abs(col - pawn.getCol()) <= 1) {
             return true;
         }
+        return false;
     }
 
 }
