@@ -14,6 +14,7 @@ public class MainMenu extends JFrame implements ActionListener {
         setSize(WIDTH, HEIGHT);
         JButton btn = new JButton("Click Here");
         btn.setBounds(50, 100, 95, 30);
+        add(btn);
         setResizable(false);
         setLayout(null);
         add(new MainPanel());
