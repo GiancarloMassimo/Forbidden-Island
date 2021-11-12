@@ -1,4 +1,4 @@
-/*import java.util.ArrayList;
+import java.util.ArrayList;
 
 public class Player {
 
@@ -24,7 +24,7 @@ public class Player {
     }
 
     //checks if a tile can be moved to considering current position, returns boolean
-    public boolean canMove(int row, int col) {
+    /*public boolean canMove(int row, int col) {
         if ((Math.abs(row - pawn.getRow()) == 1) || (Math.abs(col - pawn.getCol()) == 1)) {
             if (map.getTile(row, col).getState() == sunk) {
                 return false;
@@ -61,7 +61,6 @@ public class Player {
 
     public void discard() {
 
-    }
+    }*/
 
 }
-*/

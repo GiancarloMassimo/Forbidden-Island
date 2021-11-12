@@ -6,11 +6,12 @@ import java.io.*;
 
 public class GamePanel extends JPanel {
 
-    private BufferedImage backgroundImage;
+    private BufferedImage backgroundImage, ;
 
     public GamePanel() {
         try {
             backgroundImage = ImageIO.read(MainPanel.class.getResource("/Images/background.png"));
+
         }
         catch(Exception E) {
             System.out.println("Exception Error");
@@ -21,7 +22,6 @@ public class GamePanel extends JPanel {
     public void paint(Graphics g) {
 
         g.drawImage(backgroundImage, 0, 0, 1600, 960, null);
-
 
         //temporary colors, implement player-to-color correspondence later
         g.setColor(new Color(82, 164, 121));
@@ -34,8 +34,10 @@ public class GamePanel extends JPanel {
         g.fillRoundRect(1056, 511, 516, 140, 10, 10);
         g.setColor(Color.white);
         for (int i = 0; i < 4; i++) {
-            g.fillRoundRect(1061, 61 + 152*i, 413, 128, 10, 10);
+            g.fillRoundRect(1061, 61 + 152 * i, 413, 128, 10, 10);
         }
+
+        g.drawImage();
 
 
     }
