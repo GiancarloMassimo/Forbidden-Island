@@ -1,4 +1,4 @@
-
+/*
 public class PlayerDiver extends Player {
 
     public void move(int row, int col) {
@@ -27,3 +27,4 @@ public class PlayerDiver extends Player {
     }
 
 }
+*/

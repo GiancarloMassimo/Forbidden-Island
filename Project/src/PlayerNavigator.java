@@ -1,2 +1,3 @@
-public class PlayerNavigator extends Player{
+/*public class PlayerNavigator extends Player{
 }
+*/

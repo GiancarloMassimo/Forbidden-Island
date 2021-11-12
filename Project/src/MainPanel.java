@@ -18,5 +18,8 @@ public class MainPanel extends JPanel{
     }
     public void paint(Graphics g) {
         g.drawImage(backgroundImage, 0, 0, 920, 518, null);
+
+
+
     }
 }
