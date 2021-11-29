@@ -10,7 +10,7 @@ public class PlayerDiver extends Player {
         /*if (map.getTile(row, col).getState() == sunk) {
             return false;
         }*/
-        if ((Math.abs(row - pawn.getRow()) == 1) || (Math.abs(col - pawn.getCol()) == 1)) {
+        /*if ((Math.abs(row - pawn.getRow()) == 1) || (Math.abs(col - pawn.getCol()) == 1)) {
             return true;
         }
         if (canMoveSpecial(row, col)) {
@@ -23,7 +23,7 @@ public class PlayerDiver extends Player {
         /*if (map.getTile(pawn.getRow())) {
 
         }*/
-        return false;
+        /*return false;
     }
 
 }

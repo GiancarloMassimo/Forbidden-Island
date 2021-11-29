@@ -40,6 +40,8 @@ public class Tile {
         return name;
     }
 
+    public TileState getState() {return state;}
+
     public BufferedImage getCurrentImage() {
         return currentImage;
     }
