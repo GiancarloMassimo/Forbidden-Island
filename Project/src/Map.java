@@ -79,4 +79,8 @@ public class Map {
 
         return null;
     }
+
+    public Tile getTileAtPosition(int row, int col) {
+        return map[row][col];
+    }
 }
