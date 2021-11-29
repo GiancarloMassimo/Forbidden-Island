@@ -2,72 +2,55 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.image.*;
 import javax.imageio.ImageIO;
-import java.io.*;
-import java.util.ArrayList;
 
-public class GamePanel extends JPanel {
+public class GamePanel extends JPanel{
+    private BufferedImage backGroundImage,floodCardBackImage,treasureCardBackImage, waterMarkerImage;
 
-    private BufferedImage backgroundImage, airTreasureCard, earthTreasureCard, fireTreasureCard, waterTreasureCard;
-
-    //temporary hands
-    private ArrayList<TreasureCard> treasureCardHandPlayer1 = new ArrayList<TreasureCard>();
-    private ArrayList<TreasureCard> treasureCardHandPlayer2 = new ArrayList<TreasureCard>();
-    private ArrayList<TreasureCard> treasureCardHandPlayer3 = new ArrayList<TreasureCard>();
-    private ArrayList<TreasureCard> treasureCardHandPlayer4 = new ArrayList<TreasureCard>();
-
-    public GamePanel() {
+    public GamePanel(){
+        FloodDeck.gamePanel = this;
         try {
-            backgroundImage = ImageIO.read(MainPanel.class.getResource("/Images/background.png"));
-            airTreasureCard = ImageIO.read(MainPanel.class.getResource("/Images/AIR.png"));
-            earthTreasureCard = ImageIO.read(MainPanel.class.getResource("/Images/TERRE.png"));
-            fireTreasureCard = ImageIO.read(MainPanel.class.getResource("/Images/FEU.png"));
-            waterTreasureCard = ImageIO.read(MainPanel.class.getResource("/Images/EAU.png"));
+            backGroundImage = ImageIO.read(GamePanel.class.getResource("/Images/background.png"));
+            floodCardBackImage = ImageIO.read(GamePanel.class.getResource("/Images/FloodCardBack.png"));
+            treasureCardBackImage = ImageIO.read(GamePanel.class.getResource("/Images/TreasureCardBack.png"));
+            waterMarkerImage = ImageIO.read(GamePanel.class.getResource("/Images/Watermeter.png.png"));
         }
-        catch(Exception E) {
+        catch(Exception E)
+        {
             System.out.println("Exception Error");
             return;
         }
+    }
+    public void paint(Graphics g){
+        g.drawImage(backGroundImage, 0, 0, 936, 557, null);
+        g.drawImage(floodCardBackImage, 782, 300, 128, 188, null);
+        g.drawImage(treasureCardBackImage, 782, 65, 128, 188, null);
 
-        //temporary placeholder data
-        treasureCardHandPlayer1.add(new TreasureCard("air"));
-        treasureCardHandPlayer1.add(new TreasureCard("air"));
-        treasureCardHandPlayer1.add(new TreasureCard("fire"));
-        treasureCardHandPlayer1.add(new TreasureCard("water"));
-
+        drawMap(g);
+        drawWaterMaker(g);
     }
 
-    public void paint(Graphics g) {
+    private void drawMap(Graphics g) {
+        //Draw translucent rectangle behind the map
+        int marginX = 10, marginY = 10, containerWidth = 650, containerHeight = 500;
 
-        g.drawImage(backgroundImage, 0, 0, 1600, 960, null);
+        g.setColor(new Color(0, 0, 0, 150));
+        g.fillRect(marginX, marginY, containerWidth, containerHeight);
 
-        //temporary colors, implement player-to-color correspondence later
-        g.setColor(new Color(82, 164, 121));
-        g.fillRoundRect(1056, 55, 516, 140, 10, 10);
-        g.setColor(new Color(76, 144, 190));
-        g.fillRoundRect(1056, 207, 516, 140, 10, 10);
-        g.setColor(new Color(234, 117, 122));
-        g.fillRoundRect(1056, 359, 516, 140, 10, 10);
-        g.setColor(new Color(253, 246, 127));
-        g.fillRoundRect(1056, 511, 516, 140, 10, 10);
-        g.setColor(Color.white);
-        for (int i = 0; i < 4; i++) {
-            g.fillRoundRect(1061, 61 + 152 * i, 413, 128, 10, 10);
+        // Draw the actual map
+        int tileSize = 75, offsetX = 20, offsetY = 24, spacing = 80;
+
+        Tile[][] map = Map.instance.getMap();
+        for (int r = 0; r < 6; r++) {
+            for (int c = 0; c < 6; c++) {
+                if (map[r][c] == null) {
+                    continue;
+                }
+                g.drawImage(map[r][c].getCurrentImage(), offsetX + c * spacing, offsetY + r * spacing, tileSize, tileSize, null);
+            }
         }
-
-        for (int i = 0; i < treasureCardHandPlayer1.size(); i++) {
-            if (treasureCardHandPlayer1.get(i).equals("air"))
-                g.drawImage(airTreasureCard, 1065, 65 + 81*i, 81, 119, null);
-            else if (treasureCardHandPlayer1.get(i).equals("earth"))
-                g.drawImage(earthTreasureCard, 1065, 65 + 81*i, 81, 119, null);
-            else if (treasureCardHandPlayer1.get(i).equals("fire"))
-                g.drawImage(fireTreasureCard, 1065, 65 + 81*i, 81, 119, null);
-            else if (treasureCardHandPlayer1.get(i).equals("water"))
-                g.drawImage(waterTreasureCard, 1065, 65 + 81*i, 81, 119, null);
-        }
-
-
-
-
     }
 
+    private void drawWaterMaker(Graphics g) {
+        g.drawImage(waterMarkerImage, 550, 100, 130, 358, null);
+    }
 }

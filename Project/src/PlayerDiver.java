@@ -7,9 +7,9 @@ public class PlayerDiver extends Player {
 
     //@Override
     public boolean canMove(int row, int col) {
-        if (map.getTile(row, col).getState() == sunk) {
+        /*if (map.getTile(row, col).getState() == sunk) {
             return false;
-        }
+        }*/
         if ((Math.abs(row - pawn.getRow()) == 1) || (Math.abs(col - pawn.getCol()) == 1)) {
             return true;
         }
@@ -20,9 +20,9 @@ public class PlayerDiver extends Player {
     }
 
     private boolean canMoveSpecial(int row, int col) {
-        if (map.getTile(pawn.getRow())) {
+        /*if (map.getTile(pawn.getRow())) {
 
-        }
+        }*/
         return false;
     }
 
