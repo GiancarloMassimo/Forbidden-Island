@@ -13,6 +13,7 @@ public class MainMenu extends JFrame implements ActionListener {
     public MainMenu(String framename){
         super(framename);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
         setSize(WIDTH, HEIGHT);
 
         setResizable(false);
