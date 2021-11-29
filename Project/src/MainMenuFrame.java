@@ -26,13 +26,12 @@ public class MainMenuFrame extends JFrame implements ActionListener {
         super(framename);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(WIDTH, HEIGHT);
-        JButton btn = new JButton("Click Here");
-        btn.setBounds(50, 100, 95, 30);
-        add(btn);
+        //JButton btn = new JButton("Click Here");
+        //btn.setBounds(50, 100, 95, 30);
+        //add(btn);
         setResizable(false);
         add(new MainMenuPanel());
-        setLayout(null);
-        add(new MainMenuPanel());
+        //setLayout(null);
         setVisible(true);
     }
 
