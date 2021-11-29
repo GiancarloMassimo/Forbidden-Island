@@ -29,8 +29,10 @@ public class GamePanel extends JPanel {
         }
 
         //temporary placeholder data
-
-
+        treasureCardHandPlayer1.add(new TreasureCard("air"));
+        treasureCardHandPlayer1.add(new TreasureCard("air"));
+        treasureCardHandPlayer1.add(new TreasureCard("fire"));
+        treasureCardHandPlayer1.add(new TreasureCard("water"));
 
     }
 
@@ -50,6 +52,17 @@ public class GamePanel extends JPanel {
         g.setColor(Color.white);
         for (int i = 0; i < 4; i++) {
             g.fillRoundRect(1061, 61 + 152 * i, 413, 128, 10, 10);
+        }
+
+        for (int i = 0; i < treasureCardHandPlayer1.size(); i++) {
+            if (treasureCardHandPlayer1.get(i).equals("air"))
+                g.drawImage(airTreasureCard, 1065, 65 + 81*i, 81, 119, null);
+            else if (treasureCardHandPlayer1.get(i).equals("earth"))
+                g.drawImage(earthTreasureCard, 1065, 65 + 81*i, 81, 119, null);
+            else if (treasureCardHandPlayer1.get(i).equals("fire"))
+                g.drawImage(fireTreasureCard, 1065, 65 + 81*i, 81, 119, null);
+            else if (treasureCardHandPlayer1.get(i).equals("water"))
+                g.drawImage(waterTreasureCard, 1065, 65 + 81*i, 81, 119, null);
         }
 
 
