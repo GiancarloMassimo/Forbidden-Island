@@ -1,7 +1,7 @@
 import java.util.*;
 
 public class FloodDeck {
-    static MainMenuPanel gamePanel;
+    static GamePanel gamePanel;
     Deque<Tile> deck;
 
     public FloodDeck () {

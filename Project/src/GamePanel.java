@@ -3,16 +3,16 @@ import javax.swing.*;
 import java.awt.image.*;
 import javax.imageio.ImageIO;
 
-public class MainMenuPanel extends JPanel{
+public class GamePanel extends JPanel{
     private BufferedImage backGroundImage,floodCardBackImage,treasureCardBackImage, waterMarkerImage;
 
-    public MainMenuPanel(){
+    public GamePanel(){
         FloodDeck.gamePanel = this;
         try {
-            backGroundImage = ImageIO.read(MainMenuPanel.class.getResource("/Images/background.png"));
-            floodCardBackImage = ImageIO.read(MainMenuPanel.class.getResource("/Images/FloodCardBack.png"));
-            treasureCardBackImage = ImageIO.read(MainMenuPanel.class.getResource("/Images/TreasureCardBack.png"));
-            waterMarkerImage = ImageIO.read(MainMenuPanel.class.getResource("/Images/Watermeter.png"));
+            backGroundImage = ImageIO.read(GamePanel.class.getResource("/Images/background.png"));
+            floodCardBackImage = ImageIO.read(GamePanel.class.getResource("/Images/FloodCardBack.png"));
+            treasureCardBackImage = ImageIO.read(GamePanel.class.getResource("/Images/TreasureCardBack.png"));
+            waterMarkerImage = ImageIO.read(GamePanel.class.getResource("/Images/Watermeter.png.png"));
         }
         catch(Exception E)
         {

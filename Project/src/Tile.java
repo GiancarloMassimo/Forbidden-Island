@@ -10,8 +10,8 @@ public class Tile {
     public Tile(String name) {
         this.name = name;
         try {
-            normalImage = ImageIO.read(MainMenuPanel.class.getResource("/Images/Tiles/" + name.replaceAll("\'", "") + ".png"));
-            floodedImage = ImageIO.read(MainMenuPanel.class.getResource("/Images/Tiles/" + name.replaceAll("\'", "") + "Flooded Final.png"));
+            normalImage = ImageIO.read(GamePanel.class.getResource("/Images/Tiles/" + name.replaceAll("\'", "") + ".png"));
+            floodedImage = ImageIO.read(GamePanel.class.getResource("/Images/Tiles/" + name.replaceAll("\'", "") + "Flooded Final.png"));
             currentImage = normalImage;
         }
         catch (Exception e) {
