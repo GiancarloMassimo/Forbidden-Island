@@ -1,6 +1,7 @@
 import java.awt.*;
 import javax.swing.*;
 import java.awt.image.*;
+import java.util.Objects;
 import javax.imageio.ImageIO;
 
 public class GamePanel extends JPanel{
@@ -12,7 +13,7 @@ public class GamePanel extends JPanel{
             backGroundImage = ImageIO.read(GamePanel.class.getResource("/Images/background.png"));
             floodCardBackImage = ImageIO.read(GamePanel.class.getResource("/Images/FloodCardBack.png"));
             treasureCardBackImage = ImageIO.read(GamePanel.class.getResource("/Images/TreasureCardBack.png"));
-            waterMarkerImage = ImageIO.read(GamePanel.class.getResource("/Images/Watermeter.png.png"));
+            waterMarkerImage = ImageIO.read(Objects.requireNonNull(GamePanel.class.getResource("/Images/Watermeter.png")));
         }
         catch(Exception E)
         {
