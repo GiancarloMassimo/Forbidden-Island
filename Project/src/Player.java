@@ -26,9 +26,9 @@ public class Player {
     //checks if a tile can be moved to considering current position, returns boolean
     public boolean canMove(int row, int col) {
         if ((Math.abs(row - pawn.getRow()) == 1) || (Math.abs(col - pawn.getCol()) == 1)) {
-            if (map.getTile(row, col).getState() == sunk) {
+            /*if (map.getTile(row, col).getState() == sunk) {
                 return false;
-            }
+            }*/
             return true;
         }
         return false;
@@ -41,9 +41,9 @@ public class Player {
 
     //checks if tile can be shored up
     public boolean canShoreUp(int row, int col) {
-        if ((Math.abs(row - pawn.getRow()) <= 1) && (Math.abs(col - pawn.getCol()) <= 1) && map.getTile(row, col).getState() != sunk) {
+        /*if ((Math.abs(row - pawn.getRow()) <= 1) && (Math.abs(col - pawn.getCol()) <= 1) && map.getTile(row, col).getState() != sunk) {
             return true;
-        }
+        }*/
         return false;
     }
 
