@@ -68,7 +68,7 @@ public class Map {
         }
     }
 
-    public Tile findTileInMapByName(String name) {
+    public Tile findTileInMapByName(String name) {  vb
         for (Tile[] row : map) {
             for(Tile tile : row) {
                 if (tile.getName().equals(name)) {
