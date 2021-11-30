@@ -7,28 +7,28 @@ public class Map {
     private Tile[] tiles = {
         new Tile("Breaker's Bridge"),
         new Tile("Bronze Gate"),
-        new Tile("Cave of Embers"),
-        new Tile("Cave of Shadows"),
+        new Tile("Cave of Embers", "fire"),
+        new Tile("Cave of Shadows", "fire"),
         new Tile("Cliffs of Abandon"),
         new Tile("Copper Gate"),
-        new Tile("Coral Palace"),
+        new Tile("Coral Palace", "water"),
         new Tile("Crimson Forest"),
         new Tile("Dunes of Deception"),
         new Tile("Fool's Landing"),
         new Tile("Gold Gate"),
-        new Tile("Howling Garden"),
+        new Tile("Howling Garden", "air"),
         new Tile("Iron Gate"),
         new Tile("Lost Lagoon"),
         new Tile("Misty Marsh"),
         new Tile("Observatory"),
         new Tile("Phantom Rock"),
         new Tile("Silver Gate"),
-        new Tile("Temple Moon"),
-        new Tile("Temple Sun"),
-        new Tile("Tidal Palace"),
+        new Tile("Temple Moon", "earth"),
+        new Tile("Temple Sun", "earth"),
+        new Tile("Tidal Palace", "water"),
         new Tile("Twilight Hollow"),
         new Tile("Watchtower"),
-        new Tile("Whispering Garden")
+        new Tile("Whispering Garden", "air")
     };
 
     public Map() {
