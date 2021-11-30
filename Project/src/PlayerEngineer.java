@@ -1,12 +1,10 @@
-/*
-public class PlayerEngineer extends Player{
 
-    private int specialShoreUps;
+public class PlayerEngineer extends Player {
 
-    //@Override
-    public void shoreUp(int row, int col) {
+    //@Override, passes two sets of tile coordinates
+    public void shoreUp(int row1, int col1, int row2, int col2) {
 
     }
 
+    public
 }
-*/
