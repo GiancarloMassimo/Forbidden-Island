@@ -26,9 +26,9 @@ public class Player {
     //checks if a tile can be moved to considering current position, returns boolean
     public boolean canMove(int row, int col) {
         if ((Math.abs(row - pawn.getRow()) == 1) || (Math.abs(col - pawn.getCol()) == 1)) {
-            /*if (map.getTile(row, col).getState() == sunk) {
+            if (Map.instance.getTileAtPosition(row,col).getState() == TileState.sunk) {
                 return false;
-            }*/
+            }
             return true;
         }
         return false;
@@ -36,31 +36,68 @@ public class Player {
 
     //shores up tile with given coordinates
     public void shoreUp(int row, int col) {
-        //map.getTile(row, col).shoreup();
+        Map.instance.getTileAtPosition(row,col).shoreUp();
     }
 
     //checks if tile can be shored up
     public boolean canShoreUp(int row, int col) {
-        /*if ((Math.abs(row - pawn.getRow()) <= 1) && (Math.abs(col - pawn.getCol()) <= 1) && map.getTile(row, col).getState() != sunk) {
+        if ((Math.abs(row - pawn.getRow()) <= 1) && (Math.abs(col - pawn.getCol()) <= 1) && Map.instance.getTileAtPosition(row, col).getState() == TileState.flooded) {
             return true;
-        }*/
+        }
         return false;
     }
 
+    //removes 4 treasureCards from the treasureCardHand
     public void captureTreasure(String treasure) {
+        TreasureCard differentCard = null;
+        for (TreasureCard tCard: treasureCardHand) {
+            if (!tCard.getType().equals(treasure))
+                differentCard = tCard;
+        }
+        treasureCardHand = new ArrayList<TreasureCard>();
+        if (differentCard != null) {
+            treasureCardHand.add(differentCard);
+        }
 
     }
 
-    public void giveCard() {
+    //checks if conditions are met to be able to capture given treasure
+    public boolean canCaptureTreasure(String treasure) {
+        if (Map.instance.getTileAtPosition(pawn.getRow(), pawn.getCol()).getTileTreasure().equals(treasure)) {
+            int treasureCardCount = 0;
+            TreasureCard differentCard = null;
+            for (TreasureCard tCard: treasureCardHand) {
+                if (tCard.getType().equals(treasure))
+                    treasureCardCount++;
+                else
+                    differentCard = tCard;
+            }
 
-    }
-
-    public boolean canGiveCard() {
+            if (treasureCardCount <= 4)
+                return true;
+        }
         return false;
     }
 
-    public void discard() {
+    //gives TreasureCard tcard to specified recipient
+    public void giveCard(TreasureCard tCard, Player recipient) {
+        treasureCardHand.remove(tCard);
+        recipient.treasureCardHand.add(tCard);
+    }
 
+    //checks if conditions for TreasureCard to be given to recipient player
+    public boolean canGiveCard(TreasureCard tCard, Player recipient) {
+        if (pawn.getRow() == recipient.pawn.getRow() && pawn.getCol() == recipient.pawn.getCol()) {
+            if (treasureCardHand.contains(tCard)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //removes TreasureCard from treasureCardHand
+    public void discard(TreasureCard tCard) {
+        treasureCardHand.remove(tCard);
     }
 
 }
