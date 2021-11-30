@@ -1,29 +1,20 @@
 
 public class PlayerDiver extends Player {
 
-    public void move(int row, int col) {
-        super.move(row, col);
-    }
+  /*  private int[][] map = new int[6][6];
+    //checks if PlayerDiver can do special move
+    public boolean canMoveSpecial(int row, int col) {
+        if ()
 
-    //@Override
-    public boolean canMove(int row, int col) {
-        /*if (map.getTile(row, col).getState() == sunk) {
-            return false;
-        }*/
-        if ((Math.abs(row - pawn.getRow()) == 1) || (Math.abs(col - pawn.getCol()) == 1)) {
-            return true;
-        }
-        if (canMoveSpecial(row, col)) {
-            return true;
-        }
+
         return false;
     }
 
-    private boolean canMoveSpecial(int row, int col) {
-        /*if (map.getTile(pawn.getRow())) {
+    private boolean reachableByWater(int row, int col) {
+        map[row][col]
+        if () {
 
-        }*/
-        return false;
-    }
+        }
+    }*/
 
 }
