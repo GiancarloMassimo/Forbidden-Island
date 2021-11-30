@@ -42,7 +42,7 @@ public class Player {
 
     //checks if tile can be shored up
     public boolean canShoreUp(int row, int col) {
-        if ((Math.abs(row - pawn.getRow()) <= 1) && (Math.abs(col - pawn.getCol()) <= 1) && Map.instance.getTileAtPosition(row, col).getState() == TileState.flooded) {
+        if ((Math.abs(row - pawn.getRow()) + Math.abs(col - pawn.getCol()) <= 1) && Map.instance.getTileAtPosition(row, col).getState() == TileState.flooded) {
             return true;
         }
         return false;
