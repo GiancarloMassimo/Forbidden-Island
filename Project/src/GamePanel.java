@@ -23,11 +23,16 @@ public class GamePanel extends JPanel{
     }
     public void paint(Graphics g){
         g.drawImage(backGroundImage, 0, 0, 936, 557, null);
-        g.drawImage(floodCardBackImage, 782, 300, 128, 188, null);
         g.drawImage(treasureCardBackImage, 782, 65, 128, 188, null);
 
         drawMap(g);
         drawWaterMaker(g);
+        drawFloodDeck(g);
+    }
+
+    private void drawFloodDeck(Graphics g) {
+        g.drawImage(floodCardBackImage, 782, 300, 128, 188, null);
+        g.drawImage(Main.floodDeck.discardPileImage, 782, 150, 128, 188, null);
     }
 
     private void drawMap(Graphics g) {
@@ -53,5 +58,13 @@ public class GamePanel extends JPanel{
 
     private void drawWaterMaker(Graphics g) {
         g.drawImage(waterMarkerImage, 550, 100, 130, 358, null);
+
+        //water level
+
+        int x = 525;
+        int yOffset = 397;
+        int ySpacing = 30;
+        g.setColor(Color.red);
+        g.fillRect(x, yOffset - ySpacing * (WaterLevel.waterMarkerLevel - 1), 75, 15);
     }
 }
