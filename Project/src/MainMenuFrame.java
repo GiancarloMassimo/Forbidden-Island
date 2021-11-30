@@ -17,18 +17,16 @@ public class MainMenuFrame extends JFrame implements ActionListener {
     private boolean hexInput, binInput, decInput;
     private int number;
 
-    private static final int WIDTH = 936;
-    private static final int HEIGHT = 557;
+    private static final int WIDTH = 1600;
+    private static final int HEIGHT = 960;
     public MainMenuFrame(String framename){
         super(framename);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(WIDTH, HEIGHT);
-        //JButton btn = new JButton("Click Here");
-        //btn.setBounds(50, 100, 95, 30);
-        //add(btn);
+
         setResizable(false);
         add(new GamePanel());
-        //setLayout(null);
+
         setVisible(true);
     }
 
