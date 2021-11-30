@@ -1,2 +1,3 @@
-public class PlayerPilot extends Player{
+/*public class PlayerPilot extends Player{
 }
+*/

@@ -13,7 +13,8 @@ public class GamePanel extends JPanel{
             backGroundImage = ImageIO.read(GamePanel.class.getResource("/Images/background.png"));
             floodCardBackImage = ImageIO.read(GamePanel.class.getResource("/Images/FloodCardBack.png"));
             treasureCardBackImage = ImageIO.read(GamePanel.class.getResource("/Images/TreasureCardBack.png"));
-            waterMarkerImage = ImageIO.read(Objects.requireNonNull(GamePanel.class.getResource("/Images/Watermeter.png")));
+            waterMarkerImage = ImageIO.read(GamePanel.class.getResource("/Images/Watermeter.png")));
+
         }
         catch(Exception E)
         {
@@ -22,7 +23,7 @@ public class GamePanel extends JPanel{
         }
     }
     public void paint(Graphics g){
-        g.drawImage(backGroundImage, 0, 0, 936, 557, null);
+        g.drawImage(backGroundImage, 0, 0, 1600, 900, null);
         g.drawImage(floodCardBackImage, 782, 300, 128, 188, null);
         g.drawImage(treasureCardBackImage, 782, 65, 128, 188, null);
 
@@ -32,7 +33,7 @@ public class GamePanel extends JPanel{
 
     private void drawMap(Graphics g) {
         //Draw translucent rectangle behind the map
-        int marginX = 10, marginY = 10, containerWidth = 650, containerHeight = 500;
+        int marginX = 22, marginY = 55, containerWidth = 1021, containerHeight = 850;
 
         g.setColor(new Color(0, 0, 0, 150));
         g.fillRect(marginX, marginY, containerWidth, containerHeight);
