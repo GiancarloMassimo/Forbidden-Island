@@ -25,7 +25,8 @@ public class Player {
 
     //checks if a tile can be moved to considering current position, returns boolean
     public boolean canMove(int row, int col) {
-        if ((Math.abs(row - pawn.getRow()) == 1) || (Math.abs(col - pawn.getCol()) == 1)) {
+        if (((Math.abs(row - pawn.getRow()) == 1) && (Math.abs(col - pawn.getCol()) == 0)) ||
+            ((Math.abs(row - pawn.getRow()) == 0) && (Math.abs(col - pawn.getCol()) == 1))) {
             if (Map.instance.getTileAtPosition(row,col).getState() == TileState.sunk) {
                 return false;
             }
