@@ -7,7 +7,7 @@ public class PlayerNavigator extends Player{
 
     public boolean canMoveOtherPlayer(Player p, int row, int col) {
         if (Math.abs(p.pawn.getRow() - row) + Math.abs(p.pawn.getCol() - col) <= 2) {
-            if (!Map.instance.getTileAtPosition(row, col).getState().equals(TileState.sunk)) {
+            if (Map.instance.getTileAtPosition(row, col) != null) {
                 return true;
             }
         }

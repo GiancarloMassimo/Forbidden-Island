@@ -7,7 +7,7 @@ public class PlayerPilot extends Player{
     }
 
     public boolean canMoveSpecial(int row, int col) {
-        if (abilityIsAvailable && Map.instance.getTileAtPosition(row, col).getState() != TileState.sunk)
+        if (abilityIsAvailable && Map.instance.getTileAtPosition(row, col) != null)
             return true;
         return false;
     }

@@ -1,7 +1,7 @@
 
 public class PlayerDiver extends Player {
 
-    private int[][] map = new int[6][6];
+  /*  private int[][] map = new int[6][6];
     //checks if PlayerDiver can do special move
     public boolean canMoveSpecial(int row, int col) {
         if ()
@@ -15,6 +15,6 @@ public class PlayerDiver extends Player {
         if () {
 
         }
-    }
+    }*/
 
 }
