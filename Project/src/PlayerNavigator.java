@@ -1,6 +1,5 @@
 public class PlayerNavigator extends Player{
 
-
     public void moveOtherPlayer(Player p, int row, int col) {
         p.pawn.setRow(row);
         p.pawn.setCol(col);
