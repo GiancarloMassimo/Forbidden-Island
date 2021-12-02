@@ -17,6 +17,10 @@ public class Player {
         pawn = new Pawn(adventurer);
     }
 
+    public Player(int row, int col) {
+        pawn = new Pawn(row, col);
+    }
+
     //moves player Pawn to given tile coordinates
     public void move(int row, int col) {
         pawn.setRow(row);
@@ -25,8 +29,9 @@ public class Player {
 
     //checks if a tile can be moved to considering current position, returns boolean
     public boolean canMove(int row, int col) {
-        if ((Math.abs(row - pawn.getRow()) == 1) || (Math.abs(col - pawn.getCol()) == 1)) {
-            if (Map.instance.getTileAtPosition(row,col).getState() == TileState.sunk) {
+        if (((Math.abs(row - pawn.getRow()) == 1) && (Math.abs(col - pawn.getCol()) == 0)) ||
+                ((Math.abs(row - pawn.getRow()) == 0) && (Math.abs(col - pawn.getCol()) == 1))) {
+            if (Map.instance.getTileAtPosition(row,col) == null) {
                 return false;
             }
             return true;
@@ -41,7 +46,7 @@ public class Player {
 
     //checks if tile can be shored up
     public boolean canShoreUp(int row, int col) {
-        if ((Math.abs(row - pawn.getRow()) <= 1) && (Math.abs(col - pawn.getCol()) <= 1) && Map.instance.getTileAtPosition(row, col).getState() == TileState.flooded) {
+        if ((Math.abs(row - pawn.getRow()) + Math.abs(col - pawn.getCol()) <= 1) && Map.instance.getTileAtPosition(row, col).getState() == TileState.flooded) {
             return true;
         }
         return false;
@@ -100,4 +105,7 @@ public class Player {
         treasureCardHand.remove(tCard);
     }
 
+    public Pawn getPawn() {
+        return pawn;
+    }
 }
