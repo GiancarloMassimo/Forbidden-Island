@@ -18,7 +18,7 @@ public class MainMenuFrame extends JFrame implements ActionListener {
     private int number;
 
     private static final int WIDTH = 1600;
-    private static final int HEIGHT = 900;
+    private static final int HEIGHT = 960;
     public MainMenuFrame(String framename){
         super(framename);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
