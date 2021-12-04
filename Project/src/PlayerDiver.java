@@ -63,5 +63,4 @@ public class PlayerDiver extends Player {
             checkNeighboringTiles(row, col + 1);
         }
     }
-
 }

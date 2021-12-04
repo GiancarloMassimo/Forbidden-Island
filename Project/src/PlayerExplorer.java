@@ -7,8 +7,8 @@ public class PlayerExplorer extends Player{
 
     //@Override
     public boolean canMove(int row, int col) {
-        if ((Math.abs(row - pawn.getRow()) == 1) || (Math.abs(col - pawn.getCol()) == 1)) {
-            if (Map.instance.getTileAtPosition(row,col).getState() == TileState.sunk) {
+        if ((Math.abs(row - pawn.getRow()) <= 1) && (Math.abs(col - pawn.getCol()) <= 1)) {
+            if (Map.instance.getTileAtPosition(row,col) == null) {
                 return false;
             }
             return true;

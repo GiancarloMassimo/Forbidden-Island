@@ -7,6 +7,7 @@ public class PlayerEngineer extends Player {
         Map.instance.getTileAtPosition(row2,col2).shoreUp();
     }
 
+
     public boolean canShoreUp(int row1, int col1, int row2, int col2) {
         if ((Math.abs(row1 - pawn.getRow()) + Math.abs(col1 - pawn.getCol()) <= 1) && Map.instance.getTileAtPosition(row1, col1).getState() == TileState.flooded) {
             if ((Math.abs(row2 - pawn.getRow()) + Math.abs(col2 - pawn.getCol()) <= 1) && Map.instance.getTileAtPosition(row2, col2).getState() == TileState.flooded) {
@@ -16,4 +17,5 @@ public class PlayerEngineer extends Player {
         return false;
     }
 
+    //public
 }

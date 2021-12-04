@@ -1,5 +1,5 @@
 public class WaterLevel {
-    public static int waterMarkerLevel = 1;
+    public static int waterMarkerLevel = 2;
     public static int waterLevel = 2;
 
 
