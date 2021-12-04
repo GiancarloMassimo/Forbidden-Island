@@ -17,6 +17,10 @@ public class Player {
         pawn = new Pawn(adventurer);
     }
 
+    public Player(int row, int col) {
+       pawn = new Pawn(row, col);
+    }
+
     //moves player Pawn to given tile coordinates
     public void move(int row, int col) {
         pawn.setRow(row);
@@ -27,7 +31,7 @@ public class Player {
     public boolean canMove(int row, int col) {
         if (((Math.abs(row - pawn.getRow()) == 1) && (Math.abs(col - pawn.getCol()) == 0)) ||
             ((Math.abs(row - pawn.getRow()) == 0) && (Math.abs(col - pawn.getCol()) == 1))) {
-            if (Map.instance.getTileAtPosition(row,col).getState() == TileState.sunk) {
+            if (Map.instance.getTileAtPosition(row,col) == null) {
                 return false;
             }
             return true;
@@ -100,6 +104,8 @@ public class Player {
     public void discard(TreasureCard tCard) {
         treasureCardHand.remove(tCard);
     }
-
-
+  
+    public Pawn getPawn() {
+        return pawn;
+    }
 }
