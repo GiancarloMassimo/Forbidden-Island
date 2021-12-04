@@ -1,3 +1,3 @@
 public class TreasureManager {
-    static boolean fireCaptured = false, earthCaptured = false, waterCaptured = false, airCaptured = false;
+    static boolean fireCaptured = false, earthCaptured = true, waterCaptured = false, airCaptured = false;
 }

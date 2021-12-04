@@ -2,8 +2,7 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.image.*;
-import java.util.EventListener;
-import java.util.Objects;
+import java.io.InputStream;
 import javax.imageio.ImageIO;
 
 public class GamePanel extends JPanel implements MouseListener, KeyListener {
@@ -16,11 +15,24 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
     private boolean playerIsMoving = false, playerIsShoringUp = false;
     private Player playerMoving = null, playerShoringUp = null;
 
+    private Font font;
+
+    private int moves = 3;
+    private int currentPlayerIndex = 0;
+
     public GamePanel(){
         FloodDeck.gamePanel = this;
         addKeyListener(this);
         addMouseListener(this);
         setFocusable(true);
+        Main.currentPlayer = Main.players.get(currentPlayerIndex);
+
+        try {
+            InputStream is = GamePanel.class.getResourceAsStream("/Fonts/Neuton-Regular.ttf");
+            font = Font.createFont(Font.TRUETYPE_FONT, is);
+        } catch (Exception e) {
+            System.out.println("Exception loading font");
+        }
 
         try {
             backGroundImage = ImageIO.read(GamePanel.class.getResource("/Images/background.png"));
@@ -55,7 +67,38 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             drawShoreUpMarkers(g, playerShoringUp);
         }
 
+        drawActionUI(g);
         drawTreasure(g);
+    }
+
+    private void drawActionUI(Graphics g) {
+        g.setColor(new Color(220, 220, 220));
+        g.fillRoundRect(1056, 668, 514, 241, 50, 50);
+
+
+        g.setColor(new Color(190, 190, 190));
+        g.fillRoundRect(1173, 708, 386, 124, 50, 50);
+        g.setColor(new Color(190, 190, 190));
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setColor(new Color(70, 70, 70));
+        g2d.setStroke(new BasicStroke(2.0F));
+        g.drawRoundRect(1173, 708, 386, 124, 50, 50);
+
+
+        g.setFont(font.deriveFont(30f));
+        g.setColor(Color.BLACK);
+        g.drawString("Claimed Treasures", 1270, 700);
+
+        g.setFont(font.deriveFont(18f));
+        g.drawString("Press E to End Turn", 1200, 850);
+        g.drawString("Press S to Shore Up", 1200, 870);
+        g.drawString("Click on a tile to move a pawn", 1200, 890);
+
+        g.setFont(font.deriveFont(20f));
+        g.drawString("Actions", 1086, 890);
+
+        g.setFont(font.deriveFont(80f));
+        g.drawString(moves + "", 1092, 860);
     }
 
     private void drawShoreUpMarkers(Graphics g, Player p) {
@@ -104,7 +147,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             g.drawImage(earthImage, 581, 723, 176, 166, null);
         }
     }
-//TODO: Add canTakeAction Checker
+
     private void drawMoveMarkers(Graphics g, Player p) {
         boolean canTakeAction = false;
         int offsetX = 108, offsetY = 155, spacing = 120;
@@ -127,10 +170,15 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
 
     private void drawPlayers(Graphics g) {
         //Tile info
-        int offsetX = 73, offsetY = 120, spacing = 120;
+        int offsetX = 73, offsetY = 130, spacing = 120;
 
-        Pawn p = Main.player.pawn;
-        g.drawImage(p.getImage(), offsetX + p.getCol() * spacing, offsetY + p.getRow() * spacing, 30, 45, null);
+        int index = 0;
+        for (Player player : Main.players) {
+            Pawn p = player.pawn;
+            g.drawImage(p.getImage(), offsetX + p.getCol() * spacing + index * 15, offsetY + p.getRow() * spacing + index * 15, 30, 45, null);
+            index++;
+        }
+
     }
 
     private void drawMap(Graphics g) {
@@ -185,10 +233,10 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
 
         }
 
-        if (Main.player.pawn.getRow() == clickRow && Main.player.pawn.getCol() == clickCol && !takingAction) {
+        if (Main.currentPlayer.pawn.getRow() == clickRow && Main.currentPlayer.pawn.getCol() == clickCol && !takingAction) {
             playerIsMoving = true;
             takingAction = true;
-            playerMoving = Main.player;
+            playerMoving = Main.currentPlayer;
             repaint();
         }
 
@@ -196,13 +244,27 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             playerIsMoving = false;
             takingAction = false;
             playerMoving.move(clickRow, clickCol);
+            moves--;
             repaint();
         } else if (playerIsShoringUp && tileClicked != null && playerShoringUp.canShoreUp(clickRow, clickCol)) {
             tileClicked.shoreUp();
             playerIsShoringUp = false;
             takingAction = false;
+            moves--;
             repaint();
         }
+
+        if (moves <= 0) {
+            nextTurn();
+        }
+    }
+
+    private void nextTurn() {
+        moves = 3;
+        currentPlayerIndex++;
+        currentPlayerIndex %= Main.players.size();
+        Main.currentPlayer = Main.players.get(currentPlayerIndex);
+        repaint();
     }
 
     @Override
@@ -223,11 +285,11 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         if (!takingAction && e.getKeyChar() == 's') {
             playerIsShoringUp = true;
             takingAction = true;
-            playerShoringUp = Main.player;
+            playerShoringUp = Main.currentPlayer;
             repaint();
+        } else if (!takingAction && e.getKeyChar() == 'e') {
+            nextTurn();
         }
-
-
     }
 
     @Override

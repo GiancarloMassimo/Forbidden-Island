@@ -15,10 +15,10 @@ public class Pawn {
         col = 1;
     }
 
-    public Pawn(int r, int c) {
+    public Pawn(int r, int c, String name) {
         row = r; col = c;
         try {
-            image = ImageIO.read(GamePanel.class.getResource("/Images/Pawns/DiverPawn.png"));
+            image = ImageIO.read(GamePanel.class.getResource("/Images/Pawns/" + name + "Pawn.png"));
         } catch (Exception e) {
             System.out.println("Exception loading pawn image");
         }

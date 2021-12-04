@@ -17,8 +17,8 @@ public class Player {
         pawn = new Pawn(adventurer);
     }
 
-    public Player(int row, int col) {
-       pawn = new Pawn(row, col);
+    public Player(int row, int col, String name) {
+       pawn = new Pawn(row, col, name);
     }
 
     //moves player Pawn to given tile coordinates
