@@ -104,7 +104,7 @@ public class Player {
     public void discard(TreasureCard tCard) {
         treasureCardHand.remove(tCard);
     }
-
+  
     public Pawn getPawn() {
         return pawn;
     }
