@@ -14,7 +14,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
 
     boolean takingAction = false;
 
-    private boolean playerIsMoving = false, playerIsShoringUp = false, playerIsDiscarding = false, playerIsGivingCard;
+    private boolean playerIsMoving = false, playerIsShoringUp = false, playerIsDiscarding = false, playerIsGivingCard = false, usingSandbag = false;
     private Player playerMoving = null, playerShoringUp = null, playerDiscarding = null, playerGivingCard = null;
     int playerDiscardingIndex;
     TreasureCard cardGiving = null;
@@ -86,6 +86,8 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             drawDiscardMarkers(g, playerDiscardingIndex);
         } else if (playerIsGivingCard) {
             drawGiveCardMarkers(g, playerGivingCard);
+        } else if (usingSandbag) {
+            drawSandbagMarkers(g);
         }
 
     }
@@ -110,9 +112,17 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         g.drawString("Claimed Treasures", 1270, 700);
 
         g.setFont(font.deriveFont(18f));
-        g.drawString("Press E to End Turn", 1200, 850);
-        g.drawString("Press S to Shore Up", 1200, 870);
-        g.drawString("Click on a tile to move a pawn", 1200, 890);
+        g.drawString("Press E to End Turn", 1165, 850);
+        g.drawString("Press S to Shore Up", 1165, 870);
+        g.drawString("Click on a tile to move a pawn", 1165, 890);
+
+        g.drawString("Click on a card to give or use it", 1365, 850);
+        g.drawString("Press C to capture a treasure", 1365, 870);
+        g.drawString("Press Q for special actions", 1365, 890);
+        g.setFont(font.deriveFont(14f));
+        g.drawString("(Pilot & Navigator)", 1365, 905);
+
+
 
         g.setFont(font.deriveFont(20f));
         g.drawString("Actions", 1086, 890);
@@ -226,6 +236,28 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         }
     }
 
+    private void drawSandbagMarkers(Graphics g) {
+        boolean canTakeAction = false;
+
+        int offsetX = 108, offsetY = 155, spacing = 120;
+        g.setColor(new Color(255, 255, 255, 175));
+
+        for (int r = 0; r < 6; r++) {
+            for (int c = 0; c < 6; c++) {
+                if (Map.instance.getTileAtPosition(r, c) != null && Map.instance.getTileAtPosition(r, c).getState() == TileState.flooded) {
+                    canTakeAction = true;
+                    g.fillRoundRect(offsetX + c * spacing, offsetY + r * spacing, 50, 50, 50, 50);
+                }
+            }
+        }
+
+
+        if (!canTakeAction) {
+            usingSandbag = false;
+            takingAction = false;
+        }
+    }
+
     private void drawMoveMarkers(Graphics g, Player p) {
         boolean canTakeAction = false;
         int offsetX = 108, offsetY = 155, spacing = 120;
@@ -244,7 +276,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             playerIsMoving = false;
             takingAction = false;
             if (Map.instance.getMap()[p.getPawn().getRow()][p.getPawn().getCol()] == null) {
-                endGame("Player has sunk");
+                endGame("You Lose. Player has sunk");
             }
         }
     }
@@ -401,7 +433,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
                     playerIsGivingCard = false;
                     playerGivingCard.giveCard(cardGiving, recipient);
                     if (recipient.treasureCardHand.size() > 5) {
-                        discard(clickPlayer);
+                        discard(Main.players.indexOf(recipient));
                     }
                     moves--;
                 }
@@ -413,6 +445,19 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             repaint();
         }
 
+        if (!takingAction && cardClicked != null && cardClicked.type.equals("Sandbags")) {
+            usingSandbag = true;
+            takingAction = true;
+            Main.treasureDeck.discardPileImage = cardClicked.image;
+            Main.treasureDeck.discard.add(cardClicked);
+            Main.players.get(clickPlayer).treasureCardHand.remove(cardClicked);
+            repaint();
+        } else if (usingSandbag && tileClicked != null && tileClicked.state == TileState.flooded) {
+            tileClicked.shoreUp();
+            takingAction = false;
+            usingSandbag = false;
+            repaint();
+        }
 
 
 
