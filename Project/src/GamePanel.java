@@ -3,6 +3,7 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.awt.image.*;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.TreeSet;
 import javax.imageio.ImageIO;
 
@@ -14,8 +15,10 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
 
     boolean takingAction = false;
 
-    private boolean playerIsMoving = false, playerIsShoringUp = false, playerIsDiscarding = false, playerIsGivingCard = false, usingSandbag = false, navigatorUsingSpecial = false, navigatorSelectedPlayerToMove;
+    private boolean playerIsMoving = false, playerIsShoringUp = false, playerIsDiscarding = false,
+            playerIsGivingCard = false, usingSandbag = false, navigatorUsingSpecial = false, navigatorSelectedPlayerToMove = false, usingHelicopter = false;
     private Player playerMoving = null, playerShoringUp = null, playerDiscarding = null, playerGivingCard = null, navigatorPlayerToMove;
+    private ArrayList<Player> playersToHelicopter = new ArrayList<>();
     int playerDiscardingIndex;
     TreasureCard cardGiving = null;
     int shoreUps = 0;
@@ -90,6 +93,8 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             drawSandbagMarkers(g);
         } else if (navigatorUsingSpecial) {
             drawNavigatorSpecialMarkers(g);
+        } else if (usingHelicopter) {
+            drawHelicopterMarkers(g);
         }
 
     }
@@ -191,6 +196,29 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             }
         }
     }
+
+    public void drawHelicopterMarkers(Graphics g) {
+        g.setColor(new Color(255, 0, 0, 175));
+        int iconX = 1450, iconOffsetY = 136, iconSpacing = 145;
+
+        for (int i = 0; i < Main.players.size(); i++) {
+            if (playersToHelicopter.contains(Main.players.get(i))) continue;
+            if (Main.players.get(i).pawn.getCol() != Main.currentPlayer.pawn.getCol() || Main.players.get(i).pawn.getRow() != Main.currentPlayer.pawn.getRow()) continue;
+            g.fillRoundRect(iconX, iconOffsetY + iconSpacing * i, 50, 50, 50, 50);
+        }
+        g.setColor(new Color(255, 255, 255, 175));
+        if (playersToHelicopter.size() > 0) {
+            int offsetX = 108, offsetY = 155, spacing = 120;
+            for (int r = 0; r < 6; r++) {
+                for (int c = 0; c < 6; c++) {
+                    if (Map.instance.getTileAtPosition(r, c) != null) {
+                        g.fillRoundRect(offsetX + c * spacing, offsetY + r * spacing, 50, 50, 50, 50);
+                    }
+                }
+            }
+        }
+    }
+
 
     private void drawGiveCardMarkers(Graphics g, Player p) {
         g.setColor(new Color(255, 255, 255, 175));
@@ -454,7 +482,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
                 }
             }
 
-            if (!cardClicked.type.equals("WatersRise") && !cardClicked.type.equals("Sandbags") && (canGive || Main.players.get(clickPlayer) instanceof PlayerMessenger)) {
+            if (!cardClicked.type.equals("WatersRise") && !cardClicked.type.equals("Sandbags") && !cardClicked.type.equals("Helicopter Lift") && (canGive || Main.players.get(clickPlayer) instanceof PlayerMessenger)) {
                 takingAction = true;
                 playerIsGivingCard = true;
                 playerGivingCard = Main.players.get(clickPlayer);
@@ -494,6 +522,30 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             takingAction = false;
             usingSandbag = false;
             repaint();
+        } else if (!takingAction && cardClicked != null && cardClicked.type.equals("Helicopter Lift")) {
+            usingHelicopter = true;
+            playersToHelicopter = new ArrayList<>();
+            takingAction = true;
+            Main.treasureDeck.discardPileImage = cardClicked.image;
+            Main.treasureDeck.discard.add(cardClicked);
+            Main.players.get(clickPlayer).treasureCardHand.remove(cardClicked);
+            repaint();
+        }
+
+        if (usingHelicopter) {
+            if (Main.players.get(clickPlayer) != null && clickCard >= 5) {
+                playersToHelicopter.add(Main.players.get(clickPlayer));
+                repaint();
+            }
+
+            if (playersToHelicopter.size() > 0 && tileClicked != null) {
+                for (Player p : playersToHelicopter) {
+                    p.move(tileClicked.row, tileClicked.col);
+                }
+                usingHelicopter = false;
+                takingAction = false;
+                repaint();
+            }
         }
 
 
