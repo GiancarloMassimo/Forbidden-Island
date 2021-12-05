@@ -1,19 +1,24 @@
-public class TreasureCard implements Card{
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 
-    private String type;
+public class TreasureCard {
+
+    public String type;
+    public BufferedImage image;
 
     public TreasureCard(String t) {
         type = t;
+
+        try {
+            image = ImageIO.read(GamePanel.class.getResource("/Images/TreasureCards/" + t + ".png"));
+        }
+        catch (Exception e) {
+            System.out.println("Error loading treasure card image");
+        }
     }
 
-    @Override
-    public void onDraw() {
 
-    }
-
-    public String getType() {
+    public String toString() {
         return type;
     }
-
-
 }

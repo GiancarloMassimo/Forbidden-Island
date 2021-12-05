@@ -3,8 +3,8 @@ import java.awt.image.BufferedImage;
 
 public class Tile {
     private String name;
-    private int row = -1, col = -1;
-    private TileState state = TileState.normal;
+    int row = -1, col = -1;
+    TileState state = TileState.normal;
     private BufferedImage currentImage, normalImage, floodedImage;
     private String tileTreasure = null;
 
@@ -40,6 +40,32 @@ public class Tile {
         } else {
             state = TileState.sunk;
             Map.instance.getMap()[row][col] = null;
+            if (name.equals("Fool's Landing")) {
+                GamePanel.instance.endGame("You Lose. Fool's Landing sunk.");
+            }
+
+            if (tileTreasure == null) return;
+            switch (tileTreasure) {
+                case "fire": Map.fireLeft--;
+                if (Map.fireLeft == 0 && !TreasureManager.fireCaptured) {
+                    GamePanel.instance.endGame("You lose. All fire treasure tiles sunk before the treasure was captured.");
+                }
+                break;
+                case "air": Map.airLeft--;
+                    if (Map.airLeft == 0 && !TreasureManager.airCaptured) {
+                        GamePanel.instance.endGame("You lose. All air treasure tiles sunk before the treasure was captured.");
+                    }
+                    break;
+                case "water": Map.waterLeft--;
+                    if (Map.waterLeft == 0 && !TreasureManager.waterCaptured) {
+                        GamePanel.instance.endGame("You lose. All water treasure tiles sunk before the treasure was captured.");
+                    }
+                    break;
+                case "earth": Map.earthLeft--;
+                    if (Map.earthLeft == 0 && !TreasureManager.earthCaptured) {
+                        GamePanel.instance.endGame("You lose. All earth treasure tiles sunk before the treasure was captured.");
+                    }break;
+            }
         }
     }
 

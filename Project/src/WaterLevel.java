@@ -1,13 +1,14 @@
 public class WaterLevel {
-    public static int waterMarkerLevel = 2;
+    public static int waterMarkerLevel = 1;
     public static int waterLevel = 2;
 
 
     public static void increaseWaterLevel() {
+        Main.floodDeck.WatersRise();
         waterMarkerLevel++;
 
         if (waterMarkerLevel == 10) {
-            //TODO: Add lose condition for water level reaching maximum
+            GamePanel.instance.endGame("You Lose. The water level got too high.");
         }
 
         if (waterMarkerLevel >= 3) {

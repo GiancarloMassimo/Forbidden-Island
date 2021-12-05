@@ -4,6 +4,8 @@ public class Map {
     private Tile[][] map;
     static Map instance;
 
+    static int fireLeft = 2, earthLeft = 2, airLeft = 2, waterLeft = 2;
+
     private Tile[] tiles = {
         new Tile("Breaker's Bridge"),
         new Tile("Bronze Gate"),
@@ -57,7 +59,9 @@ public class Map {
         int margin = 2;
         for (int r = 0; r < map.length; r++) {
             for (int c = margin; c < map.length - margin; c++) {
-                map[r][c] = tileQueue.poll();
+                Tile next = tileQueue.poll();
+                next.row = r; next.col = c;
+                map[r][c] = next;
             }
 
             if (r < map.length / 2 - 1) {
@@ -71,6 +75,7 @@ public class Map {
     public Tile findTileInMapByName(String name) {
         for (Tile[] row : map) {
             for(Tile tile : row) {
+                if (tile == null) continue;
                 if (tile.getName().equals(name)) {
                     return tile;
                 }

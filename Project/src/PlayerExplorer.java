@@ -1,5 +1,9 @@
 
 public class PlayerExplorer extends Player{
+    public PlayerExplorer() {
+        super(Map.instance.findTileInMapByName("Copper Gate").row, Map.instance.findTileInMapByName("Copper Gate").col, "Explorer");
+    }
+
 
     public void move(int row, int col) {
         super.move(row, col);
@@ -7,6 +11,8 @@ public class PlayerExplorer extends Player{
 
     //@Override
     public boolean canMove(int row, int col) {
+        if (pawn.getRow() == row && pawn.getCol() == col) return false;
+
         if ((Math.abs(row - pawn.getRow()) <= 1) && (Math.abs(col - pawn.getCol()) <= 1)) {
             if (Map.instance.getTileAtPosition(row,col) == null) {
                 return false;
@@ -22,7 +28,7 @@ public class PlayerExplorer extends Player{
 
     //@Override
     public boolean canShoreUp(int row, int col) {
-        if (Math.abs(row - pawn.getRow()) <= 1 && Math.abs(col - pawn.getCol()) <= 1) {
+        if (Map.instance.getMap()[row][col] != null && Map.instance.getMap()[row][col].getState() == TileState.flooded && Math.abs(row - pawn.getRow()) <= 1 && Math.abs(col - pawn.getCol()) <= 1) {
             return true;
         }
         return false;
