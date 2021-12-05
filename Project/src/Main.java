@@ -11,10 +11,10 @@ public class Main {
     public static void main(String[] args) {
         out.println("Game Seed: " + RandomUtil.seed);
         Map map = new Map();
-        Player player1 = new PlayerPilot();
-        Player player2 = new PlayerPilot();
-        Player player3 = new PlayerPilot();
-        Player player4 = new PlayerPilot();
+        Player player1 = new PlayerNavigator();
+        Player player2 = new PlayerNavigator();
+        Player player3 = new PlayerNavigator();
+        Player player4 = new PlayerNavigator();
 
         currentPlayer = player1;
 

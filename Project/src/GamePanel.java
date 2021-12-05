@@ -14,8 +14,8 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
 
     boolean takingAction = false;
 
-    private boolean playerIsMoving = false, playerIsShoringUp = false, playerIsDiscarding = false, playerIsGivingCard = false, usingSandbag = false;
-    private Player playerMoving = null, playerShoringUp = null, playerDiscarding = null, playerGivingCard = null;
+    private boolean playerIsMoving = false, playerIsShoringUp = false, playerIsDiscarding = false, playerIsGivingCard = false, usingSandbag = false, navigatorUsingSpecial = false, navigatorSelectedPlayerToMove;
+    private Player playerMoving = null, playerShoringUp = null, playerDiscarding = null, playerGivingCard = null, navigatorPlayerToMove;
     int playerDiscardingIndex;
     TreasureCard cardGiving = null;
     int shoreUps = 0;
@@ -88,6 +88,8 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             drawGiveCardMarkers(g, playerGivingCard);
         } else if (usingSandbag) {
             drawSandbagMarkers(g);
+        } else if (navigatorUsingSpecial) {
+            drawNavigatorSpecialMarkers(g);
         }
 
     }
@@ -151,6 +153,41 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         for (int r = 0; r < Main.players.size(); r++) {
             for (int c = 0; c < Main.players.get(r).treasureCardHand.size(); c++) {
                 g.drawImage(Main.players.get(r).treasureCardHand.get(c).image, cardOffsetX + cardSpacingX * c, cardOffsetY + cardSpacingY * r, 68, 100, null);
+            }
+        }
+    }
+
+    public void drawNavigatorSpecialMarkers(Graphics g) {
+        g.setColor(new Color(255, 255, 255, 175));
+        if (!navigatorSelectedPlayerToMove) {
+            g.setColor(new Color(255, 0, 0, 175));
+            int iconX = 1450, iconOffsetY = 136, iconSpacing = 145;
+
+            for (int i = 0; i < Main.players.size(); i++) {
+                if (Main.players.get(i) == Main.currentPlayer) continue;
+                g.fillRoundRect(iconX, iconOffsetY + iconSpacing * i, 50, 50, 50, 50);
+            }
+        } else {
+            int offsetX = 108, offsetY = 155, spacing = 120;
+            boolean canTakeAction = false;
+
+            PlayerNavigator p = (PlayerNavigator) Main.currentPlayer;
+
+            for (int r = 0; r < 6; r++) {
+                for (int c = 0; c < 6; c++) {
+                    if (p.canMoveOtherPlayer(navigatorPlayerToMove, r, c)) {
+                        canTakeAction = true;
+                        g.fillRoundRect(offsetX + c * spacing, offsetY + r * spacing, 50, 50, 50, 50);
+                    }
+                }
+            }
+
+
+            if (!canTakeAction) {
+                navigatorUsingSpecial = false;
+                navigatorSelectedPlayerToMove = false;
+                takingAction = false;
+                repaint();
             }
         }
     }
@@ -428,7 +465,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             try {
                 Player recipient = Main.players.get(clickPlayer);
 
-                if (clickCard == recipient.treasureCardHand.size()) {
+                if (clickCard == recipient.treasureCardHand.size() && recipient != Main.currentPlayer) {
                     takingAction = false;
                     playerIsGivingCard = false;
                     playerGivingCard.giveCard(cardGiving, recipient);
@@ -460,7 +497,21 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         }
 
 
+        if (navigatorUsingSpecial) {
+            if (!navigatorSelectedPlayerToMove && Main.players.get(clickPlayer) != null && clickCard >= 5) {
+                navigatorSelectedPlayerToMove = true;
+                navigatorPlayerToMove = Main.players.get(clickPlayer);
+                repaint();
+            } else if (tileClicked != null && ((PlayerNavigator)Main.currentPlayer).canMoveOtherPlayer(navigatorPlayerToMove, tileClicked.row, tileClicked.col)) {
+                ((PlayerNavigator)Main.currentPlayer).moveOtherPlayer(navigatorPlayerToMove, tileClicked.row, tileClicked.col);
+                navigatorUsingSpecial = false;
+                navigatorSelectedPlayerToMove = false;
+                takingAction = false;
+                moves--;
+                repaint();
+            }
 
+        }
 
 
 
@@ -579,6 +630,11 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
                     pilotSpecialMove = true;
                     repaint();
                 }
+            } else if (Main.currentPlayer instanceof PlayerNavigator) {
+                takingAction = true;
+                navigatorUsingSpecial = true;
+                navigatorSelectedPlayerToMove = false;
+                repaint();
             }
         }
 
