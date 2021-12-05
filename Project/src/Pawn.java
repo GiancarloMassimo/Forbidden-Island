@@ -7,8 +7,9 @@ public class Pawn {
     private Color color;
     private int row;
     private int col;
+    public String name;
 
-    private BufferedImage image;
+    private BufferedImage image, icon;
 
     public Pawn(String str) {
         row = 1;
@@ -19,13 +20,19 @@ public class Pawn {
         row = r; col = c;
         try {
             image = ImageIO.read(GamePanel.class.getResource("/Images/Pawns/" + name + "Pawn.png"));
+            icon = ImageIO.read(GamePanel.class.getResource("/Images/Pawns/" + name + "Icon.png"));
         } catch (Exception e) {
             System.out.println("Exception loading pawn image");
         }
+        this.name = name;
     }
 
     public BufferedImage getImage() {
         return image;
+    }
+
+    public BufferedImage getIcon() {
+        return icon;
     }
 
     public int getRow() { return row; }

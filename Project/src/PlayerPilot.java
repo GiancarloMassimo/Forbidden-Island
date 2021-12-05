@@ -3,7 +3,6 @@ public class PlayerPilot extends Player{
     //Since pilot can only use special move once per turn, he has to have boolean which turns false after using in a turn
     private boolean abilityIsAvailable = false;
 
-    //TODO: Make sure to call this function
     public void startTurn() {
         abilityIsAvailable = true;
     }

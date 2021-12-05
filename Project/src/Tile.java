@@ -3,8 +3,8 @@ import java.awt.image.BufferedImage;
 
 public class Tile {
     private String name;
-    private int row = -1, col = -1;
-    private TileState state = TileState.normal;
+    int row = -1, col = -1;
+    TileState state = TileState.normal;
     private BufferedImage currentImage, normalImage, floodedImage;
     private String tileTreasure = null;
 

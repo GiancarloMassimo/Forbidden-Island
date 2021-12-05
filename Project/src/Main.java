@@ -4,6 +4,7 @@ import static java.lang.System.*;
 
 public class Main {
     public static FloodDeck floodDeck;
+    static TreasureDeck treasureDeck;
     public static ArrayList<Player> players = new ArrayList<>();
     public static Player currentPlayer;
 
@@ -24,5 +25,6 @@ public class Main {
 
         MainMenuFrame graphics = new MainMenuFrame("Main Menu");
         floodDeck = new FloodDeck();
+        treasureDeck = new TreasureDeck();
     }
 }

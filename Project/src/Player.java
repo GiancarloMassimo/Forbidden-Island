@@ -46,7 +46,7 @@ public class Player {
 
     //checks if tile can be shored up
     public boolean canShoreUp(int row, int col) {
-        if ((Math.abs(row - pawn.getRow()) + Math.abs(col - pawn.getCol()) <= 1) && Map.instance.getTileAtPosition(row, col).getState() == TileState.flooded) {
+        if (Map.instance.getTileAtPosition(row, col) != null && (Math.abs(row - pawn.getRow()) + Math.abs(col - pawn.getCol()) <= 1) && Map.instance.getTileAtPosition(row, col).getState() == TileState.flooded) {
             return true;
         }
         return false;
@@ -56,7 +56,7 @@ public class Player {
     public void captureTreasure(String treasure) {
         TreasureCard differentCard = null;
         for (TreasureCard tCard: treasureCardHand) {
-            if (!tCard.getType().equals(treasure))
+            if (!tCard.type.equals(treasure))
                 differentCard = tCard;
         }
         treasureCardHand = new ArrayList<TreasureCard>();
@@ -72,7 +72,7 @@ public class Player {
             int treasureCardCount = 0;
             TreasureCard differentCard = null;
             for (TreasureCard tCard: treasureCardHand) {
-                if (tCard.getType().equals(treasure))
+                if (tCard.type.equals(treasure))
                     treasureCardCount++;
                 else
                     differentCard = tCard;
