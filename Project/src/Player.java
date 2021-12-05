@@ -68,7 +68,18 @@ public class Player {
 
     //checks if conditions are met to be able to capture given treasure
     public boolean canCaptureTreasure(String treasure) {
-        if (Map.instance.getTileAtPosition(pawn.getRow(), pawn.getCol()).getTileTreasure().equals(treasure)) {
+        switch (treasure) {
+            case "fire":
+                if (TreasureManager.fireCaptured) return false;
+            case "water":
+                if (TreasureManager.waterCaptured) return false;
+            case "air":
+                if (TreasureManager.airCaptured) return false;
+            case "earth":
+                if (TreasureManager.earthCaptured) return false;
+        }
+
+        if (Map.instance.getTileAtPosition(pawn.getRow(), pawn.getCol()).getTileTreasure() != null && Map.instance.getTileAtPosition(pawn.getRow(), pawn.getCol()).getTileTreasure().equals(treasure)) {
             int treasureCardCount = 0;
             TreasureCard differentCard = null;
             for (TreasureCard tCard: treasureCardHand) {
@@ -78,7 +89,7 @@ public class Player {
                     differentCard = tCard;
             }
 
-            if (treasureCardCount <= 4)
+            if (treasureCardCount >= 4)
                 return true;
         }
         return false;

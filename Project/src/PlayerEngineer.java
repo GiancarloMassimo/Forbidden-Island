@@ -1,7 +1,11 @@
 
 public class PlayerEngineer extends Player {
+    public PlayerEngineer() {
+        super(Map.instance.findTileInMapByName("Bronze Gate").row, Map.instance.findTileInMapByName("Bronze Gate").col, "Engineer");
+    }
 
-    //@Override, passes two sets of tile coordinates, which can be the same tile
+
+   /* //@Override, passes two sets of tile coordinates, which can be the same tile
     public void shoreUp(int row1, int col1, int row2, int col2) {
         Map.instance.getTileAtPosition(row1,col1).shoreUp();
         Map.instance.getTileAtPosition(row2,col2).shoreUp();
@@ -17,5 +21,5 @@ public class PlayerEngineer extends Player {
         return false;
     }
 
-    //public
+    //public*/
 }

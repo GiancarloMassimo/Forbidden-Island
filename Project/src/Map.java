@@ -73,6 +73,7 @@ public class Map {
     public Tile findTileInMapByName(String name) {
         for (Tile[] row : map) {
             for(Tile tile : row) {
+                if (tile == null) continue;
                 if (tile.getName().equals(name)) {
                     return tile;
                 }

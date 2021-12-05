@@ -3,9 +3,11 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.awt.image.*;
 import java.io.InputStream;
+import java.util.TreeSet;
 import javax.imageio.ImageIO;
 
 public class GamePanel extends JPanel implements MouseListener, KeyListener {
+    public static GamePanel instance;
     private BufferedImage backGroundImage,floodCardBackImage,treasureCardBackImage, waterMarkerImage;
 
     private BufferedImage fireImage, earthImage, waterImage, airImage;
@@ -13,8 +15,12 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
     boolean takingAction = false;
 
     private boolean playerIsMoving = false, playerIsShoringUp = false, playerIsDiscarding = false, playerIsGivingCard;
-    private Player playerMoving = null, playerShoringUp = null, playerDiscarding = null;
+    private Player playerMoving = null, playerShoringUp = null, playerDiscarding = null, playerGivingCard = null;
     int playerDiscardingIndex;
+    TreasureCard cardGiving = null;
+    int shoreUps = 0;
+
+    boolean pilotSpecialMove = false;
 
     private Font font;
 
@@ -22,6 +28,9 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
     private int currentPlayerIndex;
 
     public GamePanel(){
+        if (instance == null)
+            instance = this;
+
         FloodDeck.gamePanel = this;
         TreasureDeck.gamePanel = this;
         addKeyListener(this);
@@ -75,6 +84,8 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             drawShoreUpMarkers(g, playerShoringUp);
         } else if (playerIsDiscarding) {
             drawDiscardMarkers(g, playerDiscardingIndex);
+        } else if (playerIsGivingCard) {
+            drawGiveCardMarkers(g, playerGivingCard);
         }
 
     }
@@ -134,13 +145,32 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         }
     }
 
+    private void drawGiveCardMarkers(Graphics g, Player p) {
+        g.setColor(new Color(255, 255, 255, 175));
+        int cardOffsetX = 1062, cardOffsetY = 108, cardSpacingX = 70, cardSpacingY = 145;
+
+        for (int i = 0; i < Main.players.size(); i++) {
+            if (Main.players.get(i) == playerGivingCard) {
+                continue;
+            }
+
+            if (playerGivingCard.pawn.getRow() != Main.players.get(i).pawn.getRow() &&
+                    playerGivingCard.pawn.getCol() != Main.players.get(i).pawn.getCol() &&
+                    !(playerGivingCard instanceof PlayerMessenger)) {
+                continue;
+            }
+
+            g.fillRoundRect(cardOffsetX + cardSpacingX * Main.players.get(i).treasureCardHand.size() + 10, cardOffsetY + cardSpacingY * i + 20, 50, 50, 50, 50);
+        }
+    }
+
     private void drawDiscardMarkers(Graphics g, int index) {
         int cardOffsetX = 1062, cardOffsetY = 108, cardSpacingX = 70, cardSpacingY = 145;
 
         g.setColor(new Color(255, 255, 255, 175));
 
         for (int c = 0; c < playerDiscarding.treasureCardHand.size(); c++) {
-            g.fillRoundRect(cardOffsetX + cardSpacingX * c + 10, cardOffsetY + cardSpacingY * index + 10, 50, 50, 50, 50);
+            g.fillRoundRect(cardOffsetX + cardSpacingX * c + 10, cardOffsetY + cardSpacingY * index + 20, 50, 50, 50, 50);
         }
 
     }
@@ -162,6 +192,10 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         if (!canTakeAction) {
             playerIsShoringUp = false;
             takingAction = false;
+            if (shoreUps > 0) {
+                moves--;
+            }
+            repaint();
         }
 
     }
@@ -199,7 +233,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
 
         for (int r = 0; r < 6; r++) {
             for (int c = 0; c < 6; c++) {
-                if (p.canMove(r, c)) {
+                if (p.canMove(r, c) ||  (pilotSpecialMove && ((PlayerPilot)playerMoving).canMoveSpecial(r, c))) {
                     canTakeAction = true;
                     g.fillRoundRect(offsetX + c * spacing, offsetY + r * spacing, 50, 50, 50, 50);
                 }
@@ -290,23 +324,28 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             repaint();
         }
 
-        if (playerIsMoving && playerMoving.canMove(clickRow, clickCol)) {
+        if (playerIsMoving && tileClicked != null && (playerMoving.canMove(clickRow, clickCol) || (pilotSpecialMove &&  ((PlayerPilot)playerMoving).canMoveSpecial(clickRow, clickCol)))) {
             playerIsMoving = false;
             takingAction = false;
-            playerMoving.move(clickRow, clickCol);
+            if (!pilotSpecialMove)
+                playerMoving.move(clickRow, clickCol);
+            else
+                ((PlayerPilot)playerMoving).moveSpecial(clickRow, clickCol);
+            pilotSpecialMove = false;
             moves--;
             correctPlayerSink();
             repaint();
         } else if (playerIsShoringUp && tileClicked != null && playerShoringUp.canShoreUp(clickRow, clickCol)) {
             tileClicked.shoreUp();
-            playerIsShoringUp = false;
-            takingAction = false;
-            moves--;
-            repaint();
-        }
+            shoreUps++;
+            if (playerShoringUp instanceof PlayerEngineer && shoreUps < 2) {
 
-        if (moves <= 0) {
-            nextTurn();
+            } else {
+                playerIsShoringUp = false;
+                takingAction = false;
+                moves--;
+            }
+            repaint();
         }
 
         // Card Info
@@ -334,11 +373,56 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
                 playerIsDiscarding = false;
             }
             repaint();
-        } else if (!takingAction && cardClicked != null) {
-            takingAction = true;
-            playerIsGivingCard = true;
+        } else if (!takingAction && cardClicked != null && clickPlayer == currentPlayerIndex) {
+
+            boolean canGive = false;
+
+            for (Player p : Main.players) {
+                if (p == Main.players.get(clickPlayer)) continue;
+                if (Main.players.get(clickPlayer).pawn.getCol() == p.pawn.getCol() && Main.players.get(clickPlayer).pawn.getRow() == p.pawn.getRow()) {
+                    canGive = true;
+                    break;
+                }
+            }
+
+            if (!cardClicked.type.equals("WatersRise") && !cardClicked.type.equals("Sandbags") && (canGive || Main.players.get(clickPlayer) instanceof PlayerMessenger)) {
+                takingAction = true;
+                playerIsGivingCard = true;
+                playerGivingCard = Main.players.get(clickPlayer);
+                cardGiving = cardClicked;
+                repaint();
+            }
+        } else if (playerIsGivingCard) {
+            try {
+                Player recipient = Main.players.get(clickPlayer);
+
+                if (clickCard == recipient.treasureCardHand.size()) {
+                    takingAction = false;
+                    playerIsGivingCard = false;
+                    playerGivingCard.giveCard(cardGiving, recipient);
+                    if (recipient.treasureCardHand.size() > 5) {
+                        discard(clickPlayer);
+                    }
+                    moves--;
+                }
+
+            }
+            catch (Exception ex) {
+
+            }
+            repaint();
         }
 
+
+
+
+
+
+
+
+        if (moves <= 0) {
+            nextTurn();
+        }
     }
 
     private void nextTurn() {
@@ -356,7 +440,7 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         currentPlayerIndex %= Main.players.size();
         Main.currentPlayer = Main.players.get(currentPlayerIndex);
 
-        if (Main.currentPlayer instanceof PlayerPilot) {
+        if (Main.currentPlayer instanceof PlayerPilot && moves <= 0) {
             ((PlayerPilot) Main.currentPlayer).startTurn();
         }
 
@@ -384,11 +468,6 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             }
 
             Main.currentPlayer = Main.players.get(currentPlayerIndex);
-
-            if (Main.currentPlayer instanceof PlayerPilot) {
-                ((PlayerPilot) Main.currentPlayer).startTurn();
-            }
-
             repaint();
         }
     }
@@ -398,7 +477,6 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
         playerIsDiscarding = true;
         takingAction = true;
         playerDiscarding = Main.players.get(index);
-        moves++;
         moves = Math.min(moves, 3);
         repaint();
     }
@@ -421,8 +499,45 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             playerIsShoringUp = true;
             takingAction = true;
             playerShoringUp = Main.currentPlayer;
+            shoreUps = 0;
             repaint();
         } else if (!takingAction && e.getKeyChar() == 'e') {
+            nextTurn();
+        } else if (!takingAction && e.getKeyChar() == 'c') {
+            if (Main.currentPlayer.canCaptureTreasure("fire")) {
+                Main.currentPlayer.captureTreasure("fire");
+                TreasureManager.fireCaptured = true;
+                moves--;
+                repaint();
+            } else if (Main.currentPlayer.canCaptureTreasure("water")) {
+                Main.currentPlayer.captureTreasure("water");
+                TreasureManager.waterCaptured = true;
+                moves--;
+                repaint();
+            } else if (Main.currentPlayer.canCaptureTreasure("earth")) {
+                Main.currentPlayer.captureTreasure("earth");
+                TreasureManager.earthCaptured = true;
+                moves--;
+                repaint();
+            } else if (Main.currentPlayer.canCaptureTreasure("air")) {
+                Main.currentPlayer.captureTreasure("air");
+                TreasureManager.airCaptured = true;
+                moves--;
+                repaint();
+            }
+        } else if (!takingAction && e.getKeyChar() == 'q') {
+            if (Main.currentPlayer instanceof PlayerPilot) {
+                if (((PlayerPilot) Main.currentPlayer).abilityIsAvailable) {
+                    playerIsMoving = true;
+                    takingAction = true;
+                    playerMoving = Main.currentPlayer;
+                    pilotSpecialMove = true;
+                    repaint();
+                }
+            }
+        }
+
+        if (moves <= 0) {
             nextTurn();
         }
     }

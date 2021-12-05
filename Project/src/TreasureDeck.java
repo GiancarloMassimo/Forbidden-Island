@@ -46,6 +46,26 @@ public class TreasureDeck {
         cardList.add(new TreasureCard("Sandbags"));
         cardList.add(new TreasureCard("Sandbags"));
 
+        /*cardList.add(new TreasureCard("air"));
+        cardList.add(new TreasureCard("air"));
+        cardList.add(new TreasureCard("air"));
+        cardList.add(new TreasureCard("air"));
+        cardList.add(new TreasureCard("air"));
+        cardList.add(new TreasureCard("air"));
+        cardList.add(new TreasureCard("air"));
+        cardList.add(new TreasureCard("air"));
+        cardList.add(new TreasureCard("air"));
+        cardList.add(new TreasureCard("air"));
+        cardList.add(new TreasureCard("air"));
+        cardList.add(new TreasureCard("air"));
+        cardList.add(new TreasureCard("air"));
+        cardList.add(new TreasureCard("air"));
+        cardList.add(new TreasureCard("air"));
+        cardList.add(new TreasureCard("air"));
+        cardList.add(new TreasureCard("air"));
+        cardList.add(new TreasureCard("air"));
+        cardList.add(new TreasureCard("air"));
+        cardList.add(new TreasureCard("air"));*/
 
 
 
