@@ -4,6 +4,8 @@ public class Map {
     private Tile[][] map;
     static Map instance;
 
+    static int fireLeft = 2, earthLeft = 2, airLeft = 2, waterLeft = 2;
+
     private Tile[] tiles = {
         new Tile("Breaker's Bridge"),
         new Tile("Bronze Gate"),

@@ -8,7 +8,7 @@ public class WaterLevel {
         waterMarkerLevel++;
 
         if (waterMarkerLevel == 10) {
-            //TODO: Add lose condition for water level reaching maximum
+            GamePanel.instance.endGame("You Lose. The water level got too high.");
         }
 
         if (waterMarkerLevel >= 3) {

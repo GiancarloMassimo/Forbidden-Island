@@ -523,13 +523,29 @@ public class GamePanel extends JPanel implements MouseListener, KeyListener {
             usingSandbag = false;
             repaint();
         } else if (!takingAction && cardClicked != null && cardClicked.type.equals("Helicopter Lift")) {
-            usingHelicopter = true;
-            playersToHelicopter = new ArrayList<>();
-            takingAction = true;
-            Main.treasureDeck.discardPileImage = cardClicked.image;
-            Main.treasureDeck.discard.add(cardClicked);
-            Main.players.get(clickPlayer).treasureCardHand.remove(cardClicked);
-            repaint();
+            boolean win = true;
+
+            if (!TreasureManager.earthCaptured || !TreasureManager.airCaptured || !TreasureManager.waterCaptured || !TreasureManager.fireCaptured) {
+                win = false;
+            }
+
+            for (Player p : Main.players) {
+                if (Map.instance.getTileAtPosition(p.pawn.getRow(), p.pawn.getCol()) != Map.instance.findTileInMapByName("Fool's Landing")) {
+                    win = false;
+                }
+            }
+
+            if (win) {
+                endGame("You Win! All pawns on Fool's Landing, all treasure captured, and you safely helicopter everyone away!");
+            } else {
+                usingHelicopter = true;
+                playersToHelicopter = new ArrayList<>();
+                takingAction = true;
+                Main.treasureDeck.discardPileImage = cardClicked.image;
+                Main.treasureDeck.discard.add(cardClicked);
+                Main.players.get(clickPlayer).treasureCardHand.remove(cardClicked);
+                repaint();
+            }
         }
 
         if (usingHelicopter) {
